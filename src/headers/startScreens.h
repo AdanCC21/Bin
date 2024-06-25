@@ -9,14 +9,16 @@
 // Inicio de sesion
 
 // Cargar archivo
-SCREENS DrawCharge(int screenWidth, int screenHeight, char UserName[]);
+char * DrawCharge(int screenWidth, int screenHeight, char UserName[]);
 
 // Menu del usuario
 
 
 // ---------------------Functions--------------------- // 
 
-SCREENS DrawCharge(int screenWidth, int screenHeight, char UserName[]){
+
+// tendria que regresar mejor el nombre del archivo o una forma de que lo lleve a otra pantalla donde ingrese el nombre del archivo
+char * DrawCharge(int screenWidth, int screenHeight, char UserName[]){
     
     // Recursos
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
@@ -54,10 +56,13 @@ SCREENS DrawCharge(int screenWidth, int screenHeight, char UserName[]){
     Rectangle exit_box = {exit_pos.x,exit_pos.y,
                         exit_size.x,exit_size.y};
     
+    // Nombre del archivo
+    char arch_name[20];
 
     SCREENS selection;
     
     bool finish = false;
+    bool showBox = false;
     Vector2 mouse;
     Vector2 click;
 
@@ -83,10 +88,25 @@ SCREENS DrawCharge(int screenWidth, int screenHeight, char UserName[]){
             
             if(CheckCollisionPointRec(mouse,arch_ld_box)){
                 DrawTextEx(fuente,archiveLd,arch_ld_pos,fontSizeOptions,1.0f,YELLOW);
-                if(CheckCollisionPointRec(click,arch_ld_box)){
-                    selection = MENU;
-                    finish = true;
-                }
+            }
+            
+            if(CheckCollisionPointRec(click,arch_ld_box)){
+                showBox = true;
+            }
+            
+            if(showBox = true){
+                    Rectangle windowBounds = { screenWidth/2 - 125, screenHeight/2 - 75, 250, 150 };
+                    GuiWindowBox(windowBounds, "Nombre");
+
+                    // Entrada de texto
+                    GuiTextBox({ windowBounds.x + 10, windowBounds.y + 40, 230, 30 }, arch_name, 64, true);
+
+
+                    // Botón para cerrar la ventana
+                    if(GuiButton({ windowBounds.x + 75, windowBounds.y + 90, 100, 30 }, "Continuar")){
+                        finish = true;
+                        showBox=false;
+                    }
             }
             
 
@@ -101,6 +121,6 @@ SCREENS DrawCharge(int screenWidth, int screenHeight, char UserName[]){
             }
         EndDrawing();
     }
-    return selection;
+    return arch_name;
 }
 

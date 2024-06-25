@@ -1,5 +1,6 @@
 #include "raylib.h"
-#include "raygui.h"
+
+// El rayGui se queda en screens.h por un problema de redefinicion
 
 #include "./headers/startScreens.h"
 
@@ -12,11 +13,14 @@ int main(){
     InitWindow(1280,720,"BIN");
     InitAudioDevice();
 
+    char *arch_name;
+
     while (!WindowShouldClose())
     {
         BeginDrawing();
             ClearBackground(WHITE);
-            DrawCharge(screenWidth,screenHeight,"Adan");
+            arch_name = DrawCharge(screenWidth,screenHeight,"Adan");
+            std::cout<<arch_name<<"\n"<<std::endl;
             
         EndDrawing();
     }
