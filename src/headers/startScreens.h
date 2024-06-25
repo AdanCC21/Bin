@@ -94,19 +94,22 @@ char * DrawCharge(int screenWidth, int screenHeight, char UserName[]){
                 showBox = true;
             }
             
-            if(showBox = true){
-                    Rectangle windowBounds = { screenWidth/2 - 125, screenHeight/2 - 75, 250, 150 };
-                    GuiWindowBox(windowBounds, "Nombre");
+            if(showBox == true){
+                
+                Rectangle text_box;
+                text_box.width = screenWidth *0.4;
+                text_box.height = screenHeight *0.1;
+                text_box.x = (screenWidth /2 )- (text_box.width/2);
+                text_box.y = (screenHeight /2 )- (text_box.height /2);
+                
+                while(true){
+                    BeginDrawing();
+                        ClearBackground(WHITE);
+                        
+                        GuiTextBox(text_box, arch_name, 64, true);
 
-                    // Entrada de texto
-                    GuiTextBox({ windowBounds.x + 10, windowBounds.y + 40, 230, 30 }, arch_name, 64, true);
-
-
-                    // Botón para cerrar la ventana
-                    if(GuiButton({ windowBounds.x + 75, windowBounds.y + 90, 100, 30 }, "Continuar")){
-                        finish = true;
-                        showBox=false;
-                    }
+                    EndDrawing();
+                }
             }
             
 
