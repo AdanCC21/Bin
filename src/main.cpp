@@ -15,14 +15,33 @@ int main(){
 
     char *arch_name;
 
-    while (!WindowShouldClose())
+    
+    SCREENS currentScreen = MENU;
+    bool finish = false;
+
+    while (!WindowShouldClose() && finish == false)
     {
-        BeginDrawing();
-            ClearBackground(WHITE);
-            arch_name = DrawCharge(screenWidth,screenHeight,"Adan");
-            std::cout<<arch_name<<"\n"<<std::endl;
+        switch (currentScreen)
+        {
+        case MENU:
+        {
+            currentScreen = DrawCharge(screenWidth,screenHeight,"Adan");
+            break;
+        }
+        case CHARGE:
+        {
             
-        EndDrawing();
+            break;
+        }
+        case EXIT:
+        {
+            DrawExit(screenWidth,screenHeight);
+            finish = true;
+            break;
+        }
+        default:
+            break;
+        }
     }
     CloseWindow();
 }

@@ -1,13 +1,17 @@
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
 
 enum SCREENS{
-    LOGIN,
-    CHARGE,
+    // Cargar o salir
     MENU,
+    // Cargar archivo
+    CHARGE,
+    //Agregar
     ADD,
-    CHANGE,
+    // Editoar
+    EDIT,
+    // Eliminar
     DELETE,
+    // MOSTRAR
     SHOW,
+    // Salir
     EXIT,
 };

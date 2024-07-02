@@ -9,16 +9,16 @@
 // Inicio de sesion
 
 // Cargar archivo
-char * DrawCharge(int screenWidth, int screenHeight, char UserName[]);
+SCREENS DrawCharge(int screenWidth, int screenHeight, char UserName[]);
 
-// Menu del usuario
-
+// Ultima pantalla
+void DrawExit(int screenWidht, int screenHeight);
 
 // ---------------------Functions--------------------- // 
 
 
 // tendria que regresar mejor el nombre del archivo o una forma de que lo lleve a otra pantalla donde ingrese el nombre del archivo
-char * DrawCharge(int screenWidth, int screenHeight, char UserName[]){
+SCREENS DrawCharge(int screenWidth, int screenHeight, char UserName[]){
     
     // Recursos
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
@@ -37,8 +37,6 @@ char * DrawCharge(int screenWidth, int screenHeight, char UserName[]){
                         
     Vector2 nameChV = archiveChV;
     nameChV.y += archiveChSize.y;
-
-    // Opciones
     
     // Cargar archivo
     char archiveLd[15] = ("Cargar Archivo");
@@ -56,17 +54,13 @@ char * DrawCharge(int screenWidth, int screenHeight, char UserName[]){
     Rectangle exit_box = {exit_pos.x,exit_pos.y,
                         exit_size.x,exit_size.y};
     
-    // Nombre del archivo
-    char arch_name[20];
-
-    SCREENS selection;
-    
     bool finish = false;
-    bool showBox = false;
     Vector2 mouse;
     Vector2 click;
 
-    while (!WindowShouldClose() && finish != true)
+    SCREENS nextScreen;
+
+    while (finish != true)
     {
         BeginDrawing();
             ClearBackground(WHITE);
@@ -91,39 +85,51 @@ char * DrawCharge(int screenWidth, int screenHeight, char UserName[]){
             }
             
             if(CheckCollisionPointRec(click,arch_ld_box)){
-                showBox = true;
-            }
-            
-            if(showBox == true){
-                
-                Rectangle text_box;
-                text_box.width = screenWidth *0.4;
-                text_box.height = screenHeight *0.1;
-                text_box.x = (screenWidth /2 )- (text_box.width/2);
-                text_box.y = (screenHeight /2 )- (text_box.height /2);
-                
-                while(true){
-                    BeginDrawing();
-                        ClearBackground(WHITE);
-                        
-                        GuiTextBox(text_box, arch_name, 64, true);
-
-                    EndDrawing();
-                }
+                nextScreen = CHARGE;
             }
             
 
             // Salir
             DrawTextEx(fuente,exit,exit_pos,fontSizeOptions,1.0f,BLACK);
+            
             if(CheckCollisionPointRec(mouse,exit_box)){
                 DrawTextEx(fuente,exit,exit_pos,fontSizeOptions,1.0f,YELLOW);
-                if(CheckCollisionPointRec(click,arch_ld_box)){
-                    selection = EXIT;
+                
+                if(CheckCollisionPointRec(click,exit_box)){
+                    nextScreen = EXIT;
                     finish = true;
                 }
             }
+            
+
         EndDrawing();
     }
-    return arch_name;
+    return nextScreen;
 }
 
+// Cargar archivo
+
+
+// Salida
+void DrawExit(int screenWidht, int screenHeight){
+    //-------------- Recursos --------------//
+    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+
+    // --------------Adios --------------//
+    char bye[10] = {"GoodBye"};
+    Vector2 ByeSize = MeasureTextEx(fuente,bye,64,1);
+    Vector2 ByeV = {(screenWidht/2) - (ByeSize.x /2), (screenHeight / 2) - (ByeSize.y / 2)};
+    
+    // Tiempo
+    float timetolive=1.5f;
+    float actualtime=0.0f;
+
+    while(actualtime <=timetolive){
+        BeginDrawing();
+            actualtime+=GetFrameTime();
+            ClearBackground(WHITE);
+            DrawTextEx(fuente,bye,ByeV,64,1.0f,BLACK);
+        EndDrawing();
+    }
+   
+}
