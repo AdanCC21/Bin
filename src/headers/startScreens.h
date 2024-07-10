@@ -209,7 +209,7 @@ string DrawCharge(int screenWidth, int screenHeight){
 
             DrawTextEx(fuente,next_ch,next_pos,54,1.0f,WHITE);
 
-            if(CheckCollisionPointRec(click,next_rec)){
+            if(CheckCollisionPointRec(click,next_rec) || IsKeyPressed(KEY_ENTER)){
                 if(arch_full == true){
                     finish = true;
                 }
@@ -292,19 +292,105 @@ void DrawExit(int screenWidht, int screenHeight){
 }
 
 void DrawShow(int screenWidth, int screenHeight, string arch_name){
+    //-------------- Recursos --------------//
+    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
     
+    // Altura default del conteido
+    int const content_size = 24;
+    // Altura de la fuente
+    Vector2 fuente_size = MeasureTextEx(fuente,"",content_size,1);
+
     // --------- Archivos Backend ---------//
     Tdata temp; // base donde se almacenara los campos
     const char *arch = arch_name.c_str(); // Nombre del archivo
     FILE *doc = fopen(arch,"rb"); // abrir el archivo
 
-    // --------- Archivos Fronted ---------//
+    // --------- Cabezera ---------//
+    Vector2 head_pos = {0,0};
+
+    Rectangle head_rec;
+    head_rec.width = screenWidth;
+    head_rec.height = screenHeight *0.05;
+    head_rec.x = head_pos.x;
+    head_rec.y = head_pos.y;
+
+    // Indice
+    char *indi_head = {"No."};    
+    Vector2 indi_head_pos = {0,0};
+
+    // Lugar
+    char *place_head = {"Place"};
+    Vector2 place_head_pos = {screenWidth *0.05,0};
+
+    // Contraseña
+    char *pass_head = {"Passwoard"};
+    Vector2 pass_head_pos = {screenWidth *0.27,0 };
+
+    // Nota
+    char *note_head = {"Note"};
+    Vector2 note_head_pos = {screenWidth*0.50,0};
     
+    // --------- Archivos Fronted ---------//
+    int indice = 0;
+    char indi_ch[1];
+    Vector2 indice_pos = {0,(head_rec.y + head_rec.height)};
+    // Tomara 1% del screenwidth
+
+    // Lugar de la contraseña
+    char place_ch[50];
+    Vector2 place_pos = {screenWidth *0.05, (head_rec.y + head_rec.height)};
+    // Tomara 25% del width
+
+    // Contraseñas
+    char pass_ch[50];
+    Vector2 pass_pos = {screenWidth *0.27,(head_rec.y + head_rec.height)};
+    // Tomara 25% del width
+
+    // Nota
+    char note_ch[50];
+    Vector2 note_pos = {screenWidth *0.50,(head_rec.y + head_rec.height)};
+    
+
 
     // ---------Generales ---------- //
     bool finish = false;
     while(finish == false){
         BeginDrawing();
+            ClearBackground(BlackBackgdround);
+            
+            // Cabezera
+            DrawRectangleRec(head_rec,BlackItem);
+            DrawTextEx(fuente,indi_head,indi_head_pos,content_size,1,Orange);
+            DrawTextEx(fuente,place_head,place_head_pos,content_size,1,Orange);
+            DrawTextEx(fuente,pass_head,pass_head_pos,content_size,1,Orange);
+            DrawTextEx(fuente,note_head,note_head_pos,content_size,1,Orange);
+
+            // Reiniciamos posiciones
+            indice_pos = {0,(head_rec.y + head_rec.height)};
+            place_pos = {float(screenWidth *0.05), (head_rec.y + head_rec.height)};
+            pass_pos = {float(screenWidth *0.27),(head_rec.y + head_rec.height)};
+            note_pos = {float(screenWidth *0.50),(head_rec.y + head_rec.height)};
+            
+            while(fread(&temp,sizeof(Tdata),1,doc))
+            {
+                indice = temp.ind;
+                itoa(indice,indi_ch,10);
+
+                strcpy(place_ch,temp.place);
+                strcpy(pass_ch,temp.pas);
+                strcpy(note_ch,temp.note);
+
+                DrawTextEx(fuente,indi_ch,indice_pos,content_size,1,WHITE);
+                DrawTextEx(fuente,place_ch,place_pos,content_size,1,WHITE);
+                DrawTextEx(fuente,pass_ch,pass_pos,content_size,1,WHITE);
+                DrawTextEx(fuente,note_ch,note_pos,content_size,1,WHITE);
+
+                indice_pos.y+=fuente_size.y;
+                place_pos.y += fuente_size.y;
+                pass_pos.y+= fuente_size.y;
+                note_pos.y+=fuente_size.y;
+            }
+            fseek(doc,0,SEEK_SET);// Reposicionar al inicio
 
         EndDrawing();
     }

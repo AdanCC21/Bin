@@ -45,7 +45,7 @@ int main(){
         }
         case SHOW:
         {
-            priArch(arch_name);
+            DrawShow(screenWidth,screenHeight,arch_name);
             currentScreen = MENU;
             break;
         }
