@@ -291,7 +291,7 @@ void DrawExit(int screenWidht, int screenHeight){
    
 }
 
-void DrawShow(int screenWidth, int screenHeight, string arch_name){
+SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
     //-------------- Recursos --------------//
     Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
     
@@ -349,21 +349,83 @@ void DrawShow(int screenWidth, int screenHeight, string arch_name){
     // Nota
     char note_ch[50];
     Vector2 note_pos = {screenWidth *0.50,(head_rec.y + head_rec.height)};
+
+    // Botones
+    Rectangle add_rec;
+    add_rec.x=screenWidth *0.9;
+    add_rec.y=screenHeight *0.1;
+    add_rec.width=screenWidth*0.1;
+    add_rec.height=screenHeight*0.1;
+    
+    Rectangle delete_rec;
+    delete_rec.x=screenWidth *0.9;
+    delete_rec.y=screenHeight *0.3;
+    delete_rec.width=screenWidth*0.1;
+    delete_rec.height=screenHeight*0.1;
+    
+    Rectangle edite_rec;
+    edite_rec.x=screenWidth *0.9;
+    edite_rec.y=screenHeight *0.5;
+    edite_rec.width=screenWidth*0.1;
+    edite_rec.height=screenHeight*0.1;
+    
+    Rectangle return_rec;
+    return_rec.x=screenWidth *0.9;
+    return_rec.y=screenHeight *0.8;
+    return_rec.width=screenWidth*0.1;
+    return_rec.height=screenHeight*0.1;
     
 
 
     // ---------Generales ---------- //
     bool finish = false;
+
+    Vector2 mouse;
+    Vector2 click;
+
     while(finish == false){
         BeginDrawing();
+            mouse= GetMousePosition();
+
+            if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){
+                click=mouse;
+            }
+
             ClearBackground(BlackBackgdround);
+
+            // ------------Botones------------
+            // Agregar
+            DrawRectangleRec(add_rec,WHITE);
+            if(CheckCollisionPointRec(click,add_rec)){
+                return ADD;
+            }
+
+            // Eliminar
+            DrawRectangleRec(delete_rec,WHITE);
+            if(CheckCollisionPointRec(click,delete_rec)){
+                return DELETE;
+            }
+            
+            // Editar
+            DrawRectangleRec(edite_rec,WHITE);
+            if(CheckCollisionPointRec(click,edite_rec)){
+                return EDIT;
+            }
+
+            // Salir
+            DrawRectangleRec(return_rec,WHITE);
+            if(CheckCollisionPointRec(click,return_rec)){
+                return MENU;
+            }
             
             // Cabezera
-            DrawRectangleRec(head_rec,BlackItem);
-            DrawTextEx(fuente,indi_head,indi_head_pos,content_size,1,Orange);
-            DrawTextEx(fuente,place_head,place_head_pos,content_size,1,Orange);
-            DrawTextEx(fuente,pass_head,pass_head_pos,content_size,1,Orange);
-            DrawTextEx(fuente,note_head,note_head_pos,content_size,1,Orange);
+            {
+                DrawRectangleRec(head_rec,BlackItem);
+                DrawTextEx(fuente,indi_head,indi_head_pos,content_size,1,Orange);
+                DrawTextEx(fuente,place_head,place_head_pos,content_size,1,Orange);
+                DrawTextEx(fuente,pass_head,pass_head_pos,content_size,1,Orange);
+                DrawTextEx(fuente,note_head,note_head_pos,content_size,1,Orange);
+            }
 
             // Reiniciamos posiciones
             indice_pos = {0,(head_rec.y + head_rec.height)};
@@ -394,4 +456,8 @@ void DrawShow(int screenWidth, int screenHeight, string arch_name){
 
         EndDrawing();
     }
+}
+
+SCREENS DrawAdd(int scerenWidth, int screenHeight){
+    
 }

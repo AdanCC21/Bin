@@ -49,6 +49,18 @@ int main(){
             currentScreen = MENU;
             break;
         }
+        case ADD:
+        {
+            break;
+        }
+        case EDIT:
+        {
+            break;
+        }
+        case DELETE:
+        {
+            break;
+        }
         case EXIT:
         {
             DrawExit(screenWidth,screenHeight);
