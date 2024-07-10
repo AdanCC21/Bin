@@ -1,7 +1,5 @@
 #include "raylib.h"
 
-// El rayGui se queda en screens.h por un problema de redefinicion
-
 #include "./headers/startScreens.h"
 
 int main(){
@@ -11,10 +9,14 @@ int main(){
 
     // Inits
     InitWindow(1280,720,"BIN");
+    Image icono = LoadImage("../assets/icono/icono.png");
+    SetWindowIcon(icono);
     InitAudioDevice();
 
-    char *arch_name;
 
+    string arch_name; // Nombre del archivo cargado
+    int p; // Posiciones cargadas, enviala con &
+    bool charged = false;
     
     SCREENS currentScreen = MENU;
     bool finish = false;
@@ -25,12 +27,26 @@ int main(){
         {
         case MENU:
         {
-            currentScreen = DrawCharge(screenWidth,screenHeight,"Adan");
+            currentScreen = DrawMenu(screenWidth,screenHeight,"Adan");
             break;
         }
-        case CHARGE:
+        case LOAD:
         {
-            
+            arch_name = DrawCharge(screenWidth,screenHeight);
+            charged = charge(arch_name,&p);
+            if(charged == true){
+                currentScreen = SHOW;
+            }
+            else
+            {
+                currentScreen = DrawFailToLoad(screenWidth,screenHeight);
+            }
+            break;
+        }
+        case SHOW:
+        {
+            priArch(arch_name);
+            currentScreen = MENU;
             break;
         }
         case EXIT:
