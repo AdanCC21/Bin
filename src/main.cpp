@@ -2,6 +2,9 @@
 
 #include "./headers/startScreens.h"
 
+// arch_name == invalid = error
+// No usar invalid para arch
+
 int main(){
     // Screen size
     int screenWidth = 1280;
@@ -30,6 +33,12 @@ int main(){
             currentScreen = DrawMenu(screenWidth,screenHeight,"Adan");
             break;
         }
+        case CREATE:
+        {
+            arch_name = DrawNew(screenWidth,screenHeight,&p);
+            currentScreen = SHOW;
+            break;
+        }
         case LOAD:
         {
             arch_name = DrawCharge(screenWidth,screenHeight);
@@ -45,12 +54,12 @@ int main(){
         }
         case SHOW:
         {
-            DrawShow(screenWidth,screenHeight,arch_name);
-            currentScreen = MENU;
+            currentScreen = DrawShow(screenWidth,screenHeight,arch_name);
             break;
         }
         case ADD:
         {
+            currentScreen = DrawAdd(screenWidth,screenHeight,arch_name, &p);
             break;
         }
         case EDIT:

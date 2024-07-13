@@ -2,7 +2,8 @@
 #include <string.h>
 #include <cstring>
 
-#define PASMAX 50
+// Maximo de caracteres aceptado en los campos
+#define MAXCHAR 50
 
 using std::cout;
 using std::endl;
@@ -11,7 +12,7 @@ using std::cin;
 
 typedef struct estructura {
     char place[50]; // Lugar de la contraseña
-    char pas[PASMAX]; // Constraseña
+    char pas[MAXCHAR]; // Constraseña
     char note[50]; // Nota que quiera agregar
     int ind; // Indice
 }Tdata;
@@ -40,6 +41,41 @@ bool charge(string arch_name, int *p){
     }
     fclose(doc);
     return false;
+}
+
+void load (int *p, const char arch[], char place[],char pass[], char note[])
+{
+    char tplace[50],//Varaible temporal de zona
+        tpas[MAXCHAR],//Temporal pass
+        tnote[50];//temporal note
+    Tdata reg;
+
+    FILE *doc = fopen(arch,"ab");
+    if(doc)
+    {
+        strcpy(reg.place,place);
+        strcpy(reg.pas,pass);
+        strcpy(reg.note,note);
+        reg.ind=(*p);
+
+        fwrite(&reg,sizeof(Tdata),1,doc);
+    }
+    else
+    {
+        printf("Archivo no encontrado\nPorfavor cargue el archivo");
+    }
+    fclose(doc);
+}
+
+void bin_create (int *p,char arch[])
+{
+    FILE *doc = fopen(arch,"wb");
+    if(doc)
+    {
+        printf("Archivo Creado\n");
+        (*p)=0;
+    }
+    fclose(doc);
 }
 
 void priArch (string arch_name)
