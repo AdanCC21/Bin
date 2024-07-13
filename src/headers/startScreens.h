@@ -8,8 +8,11 @@ using std::string;
 #include "screens.h"
 #include "logic.h"
 
+#define EXITSIZE 64
+
+
+
 // ---------------------Prototype--------------------- //
-// Inicio de sesion
 
 // MENU
 SCREENS DrawMenu(int screenWidth, int screenHeight, char UserName[]);
@@ -24,7 +27,7 @@ SCREENS DrawFailToLoad(int screenWidth, int screenHeight);
 SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name);
 
 // Agregar registro
-SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p);
+SCREENS DrawAdd(int screenWidth, int screenHeight, string arhc_name, int *p);
 
 // Ultima pantalla
 void DrawExit(int screenWidht, int screenHeight);
@@ -34,7 +37,7 @@ void DrawExit(int screenWidht, int screenHeight);
 SCREENS DrawMenu(int screenWidth, int screenHeight, char UserName[]){
     
     // Recursos
-    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    Font fuente = LoadFont("../assets/Fuentes/arialroundedmtbold.ttf");
     short int fontSize = 82;
     short int fontSizeOptions = 52;
     
@@ -148,7 +151,14 @@ SCREENS DrawMenu(int screenWidth, int screenHeight, char UserName[]){
 string DrawCharge(int screenWidth, int screenHeight){
     // -----------------Recursos-----------------
 
-    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    Font fuente = LoadFont("../assets/Fuentes/arialroundedmtbold.ttf");
+
+    // salida
+    char *exit_ch = {"X"};
+    Vector2 exit_pos = {screenWidth *0.01, screenHeight *0.01};
+    Vector2 exit_size = MeasureTextEx(fuente,exit_ch,EXITSIZE,1.0f);
+    Rectangle exit_rec = {exit_pos.x,exit_pos.y,
+                        exit_size.x,exit_size.y};
 
     // -----------------Cuadro de Texto-----------------
     const int MaxChar = 30;
@@ -203,6 +213,15 @@ string DrawCharge(int screenWidth, int screenHeight){
 
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                 click = mouse;
+            }
+
+            // Salida
+            DrawTextEx(fuente,exit_ch,exit_pos,EXITSIZE,1.0f,WHITE);
+            if(CheckCollisionPointRec(mouse,exit_rec)){
+                DrawTextEx(fuente,exit_ch,exit_pos,EXITSIZE,1.0f,Orange);
+                if(CheckCollisionPointRec(click,exit_rec)){
+                    return "invalid";
+                }
             }
             
             // ------------- instruccion -------------//
@@ -275,10 +294,10 @@ string DrawCharge(int screenWidth, int screenHeight){
 // Fallo al cargar
 SCREENS DrawFailToLoad(int screenWidth, int screenHeight){
     // ---------- Recursos ----------
-    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    Font fuente = LoadFont("../assets/Fuentes/arialroundedmtbold.ttf");
 
     // ---------- texto ----------
-    const char *fail_ch = {"Archivo no encontrado"};
+    const char *fail_ch = {"Archivo no encontrado o nombre invalido"};
     Vector2 fail_size = MeasureTextEx(fuente,fail_ch,64,1);
     Vector2 fail_pos = {(screenWidth /2) - (fail_size.x /2), (screenHeight / 2) - (fail_size.y / 2)};
 
@@ -300,8 +319,8 @@ SCREENS DrawFailToLoad(int screenWidth, int screenHeight){
 // Mostrar informacion
 SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
     //-------------- Recursos --------------//
-    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
-    
+    Font fuente = LoadFont("../assets/Fuentes/arialroundedmtbold.ttf");
+
     // Altura default del conteido
     int const content_size = 24;
     // Altura de la fuente
@@ -335,7 +354,7 @@ SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
 
     // Nota
     char *note_head = {"Note"};
-    Vector2 note_head_pos = {screenWidth*0.50,0};
+    Vector2 note_head_pos = {screenWidth*0.54,0};
     
     // --------- Archivos Fronted ---------//
     int indice = 0;
@@ -355,7 +374,7 @@ SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
 
     // Nota
     char note_ch[50];
-    Vector2 note_pos = {screenWidth *0.50,(head_rec.y + head_rec.height)};
+    Vector2 note_pos = {screenWidth *0.54,(head_rec.y + head_rec.height)};
 
     // -----------------Botones-----------------
     int txbt_size = 54;
@@ -373,7 +392,7 @@ SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
     add_pos.y = add_rec.y + 10;
     
     // Eliminar ----------
-    char del_ch[20] = {"Agregar"};
+    char del_ch[20] = {"Eliminar"};
 
     Rectangle delete_rec;
     delete_rec.x=add_rec.x;
@@ -483,7 +502,7 @@ SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
             indice_pos = {0,(head_rec.y + head_rec.height)};
             place_pos = {float(screenWidth *0.05), (head_rec.y + head_rec.height)};
             pass_pos = {float(screenWidth *0.27),(head_rec.y + head_rec.height)};
-            note_pos = {float(screenWidth *0.50),(head_rec.y + head_rec.height)};
+            note_pos = {float(screenWidth *0.54),(head_rec.y + head_rec.height)};
             
             while(fread(&temp,sizeof(Tdata),1,doc))
             {
@@ -511,12 +530,19 @@ SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
 }
 
 // Agregar registro
-SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
+SCREENS DrawAdd(int screenWidth, int screenHeight, string arhc_name, int *p){
     // ------------------ Recursos ------------------
-    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    Font fuente = LoadFont("../assets/Fuentes/arialroundedmtbold.ttf");
 
     const int inputx = 24;
     const int inputitle = 54;
+
+    // salida
+    char *exit_ch = {"X"};
+    Vector2 exit_pos = {screenWidth *0.01, screenHeight *0.01};
+    Vector2 exit_size = MeasureTextEx(fuente,exit_ch,EXITSIZE,1.0f);
+    Rectangle exit_rec = {exit_pos.x,exit_pos.y,
+                        exit_size.x,exit_size.y};
 
     // ------------------ Botones ------------------
 
@@ -526,9 +552,9 @@ SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
     Vector2 place_size = MeasureTextEx(fuente,place_ch,inputitle,1.0f);
 
     Rectangle place_rec;
-    place_rec.x = scerenWidth *0.1;
+    place_rec.x = screenWidth *0.1;
     place_rec.y = screenHeight *0.2;
-    place_rec.width = scerenWidth *0.3;
+    place_rec.width = screenWidth *0.3;
     place_rec.height = screenHeight *0.1;
 
     Vector2 place_pos = {place_rec.x, place_rec.y};
@@ -539,9 +565,9 @@ SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
     Vector2 pass_size  = MeasureTextEx(fuente,pass_ch,inputitle,1.0f);
 
     Rectangle pass_rec;
-    pass_rec.x = scerenWidth *0.6;
+    pass_rec.x = screenWidth *0.6;
     pass_rec.y = screenHeight *0.2;
-    pass_rec.width = scerenWidth *0.3;
+    pass_rec.width = screenWidth *0.3;
     pass_rec.height = screenHeight *0.1;
 
     Vector2 pass_pos = {pass_rec.x,pass_rec.y};
@@ -552,9 +578,9 @@ SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
     Vector2 note_size = MeasureTextEx(fuente,note_ch,inputitle,1.0f);
 
     Rectangle note_rec;
-    note_rec.x = scerenWidth *0.25;
+    note_rec.x = screenWidth *0.25;
     note_rec.y = screenHeight *0.6;
-    note_rec.width = scerenWidth *0.50;
+    note_rec.width = screenWidth *0.50;
     note_rec.height = screenHeight *0.2;
 
     Vector2 note_pos = {note_rec.x,note_rec.y};
@@ -565,7 +591,7 @@ SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
 
     Vector2 next_size = MeasureTextEx(fuente,next_ch,64,1.0f);
 
-    Vector2 next_pos = {(scerenWidth / 2) - (next_size.x / 2), (screenHeight *0.9 - (next_size.y / 2))};
+    Vector2 next_pos = {(screenWidth / 2) - (next_size.x / 2), (screenHeight *0.9 - (next_size.y / 2))};
     
     Rectangle next_rec;
     next_rec.x = next_pos.x;
@@ -596,6 +622,16 @@ SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
         BeginDrawing();
         mouse = GetMousePosition();
             ClearBackground(BlackBackgdround);
+
+            // Salida
+            DrawTextEx(fuente,exit_ch,exit_pos,EXITSIZE,1.0f,WHITE);
+            if(CheckCollisionPointRec(mouse,exit_rec)){
+                DrawTextEx(fuente,exit_ch,exit_pos,EXITSIZE,1.0f,Orange);
+                if(CheckCollisionPointRec(click,exit_rec)){
+                    return SHOW;
+                }
+            }
+
             if(IsMouseButtonPressed(MOUSE_LEFT_BUTTON)){
                 click = mouse;
             }
@@ -727,7 +763,7 @@ SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
                         char *please_ch = {"Porfavor llena los campos necesarios"};
                         Vector2 please_size = MeasureTextEx(fuente,please_ch, 64,1.0f);
 
-                        Vector2 please_pos = {(scerenWidth /2) - (please_size.x/2), (screenHeight /2) - (please_size.y / 2)};
+                        Vector2 please_pos = {(screenWidth /2) - (please_size.x/2), (screenHeight /2) - (please_size.y / 2)};
                         while(actualTime < timetolive){
                             BeginDrawing();
                                 ClearBackground(BlackBackgdround);
@@ -749,7 +785,14 @@ SCREENS DrawAdd(int scerenWidth, int screenHeight, string arhc_name, int *p){
 string DrawNew(int screenWidth, int screenHeight, int *p){
     // -----------------Recursos-----------------
 
-    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    Font fuente = LoadFont("../assets/Fuentes/arialroundedmtbold.ttf");
+
+    // salida
+    char *exit_ch = {"X"};
+    Vector2 exit_pos = {screenWidth *0.01, screenHeight *0.01};
+    Vector2 exit_size = MeasureTextEx(fuente,exit_ch,EXITSIZE,1.0f);
+    Rectangle exit_rec = {exit_pos.x,exit_pos.y,
+                        exit_size.x,exit_size.y};
 
     // -----------------Cuadro de Texto-----------------
     const int MaxChar = 30;
@@ -806,6 +849,15 @@ string DrawNew(int screenWidth, int screenHeight, int *p){
                 click = mouse;
             }
             
+            // Salida
+            DrawTextEx(fuente,exit_ch,exit_pos,EXITSIZE,1.0f,WHITE);
+            if(CheckCollisionPointRec(mouse,exit_rec)){
+                DrawTextEx(fuente,exit_ch,exit_pos,EXITSIZE,1.0f,Orange);
+                if(CheckCollisionPointRec(click,exit_rec)){
+                    return "invalid";
+                }
+            }
+
             // ------------- instruccion -------------//
             DrawTextEx(fuente,ins_ch,ins_pos,64,1,WHITE);
 
@@ -877,7 +929,7 @@ string DrawNew(int screenWidth, int screenHeight, int *p){
 // Salida
 void DrawExit(int screenWidht, int screenHeight){
     //-------------- Recursos --------------//
-    Font fuente = LoadFont("../assets/Fuentes/TangoSans.ttf");
+    Font fuente = LoadFont("../assets/Fuentes/arialroundedmtbold.ttf");
 
     // --------------Adios --------------//
     char bye[10] = {"Adios"};

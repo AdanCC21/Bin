@@ -3,7 +3,7 @@
 #include <cstring>
 
 // Maximo de caracteres aceptado en los campos
-#define MAXCHAR 50
+#define MAXCHAR 20
 
 using std::cout;
 using std::endl;

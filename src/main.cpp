@@ -36,19 +36,31 @@ int main(){
         case CREATE:
         {
             arch_name = DrawNew(screenWidth,screenHeight,&p);
-            currentScreen = SHOW;
+            if(arch_name == "invalid"){
+                currentScreen = MENU;
+            }
+            else
+            {
+                currentScreen = SHOW;
+            }
             break;
         }
         case LOAD:
         {
             arch_name = DrawCharge(screenWidth,screenHeight);
-            charged = charge(arch_name,&p);
-            if(charged == true){
-                currentScreen = SHOW;
+            if(arch_name == "invalid"){
+                currentScreen = MENU;
             }
             else
             {
-                currentScreen = DrawFailToLoad(screenWidth,screenHeight);
+                charged = charge(arch_name,&p);
+                if(charged == true){
+                    currentScreen = SHOW;
+                }
+                else
+                {
+                    currentScreen = DrawFailToLoad(screenWidth,screenHeight);    }
+
             }
             break;
         }
