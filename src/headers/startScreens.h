@@ -459,24 +459,24 @@ SCREENS DrawShow(int screenWidth, int screenHeight, string arch_name){
             }
 
             // Eliminar
-            DrawTextEx(fuente, del_ch, del_pos,txbt_size,1.0f,WHITE);
-            if(CheckCollisionPointRec(mouse,delete_rec)){
-                DrawTextEx(fuente, del_ch, del_pos,txbt_size,1.0f,Orange);
-                if(CheckCollisionPointRec(click,delete_rec)){
-                    return DELETE;
-                }
-            }
+            // DrawTextEx(fuente, del_ch, del_pos,txbt_size,1.0f,WHITE);
+            // if(CheckCollisionPointRec(mouse,delete_rec)){
+            //     DrawTextEx(fuente, del_ch, del_pos,txbt_size,1.0f,Orange);
+            //     if(CheckCollisionPointRec(click,delete_rec)){
+            //         return DELETE;
+            //     }
+            // }
             
             // Editar
             // DrawRectangleRec(edite_rec,WHITE);
-            DrawTextEx(fuente,edit_ch,edit_pos,txbt_size,1.0f,WHITE);
-            if(CheckCollisionPointRec(mouse,edite_rec)){
+            // DrawTextEx(fuente,edit_ch,edit_pos,txbt_size,1.0f,WHITE);
+            // if(CheckCollisionPointRec(mouse,edite_rec)){
                 
-                DrawTextEx(fuente,edit_ch,edit_pos,txbt_size,1.0f,Orange);
-                if(CheckCollisionPointRec(click,edite_rec)){
-                    return EDIT;
-                }
-            }
+            //     DrawTextEx(fuente,edit_ch,edit_pos,txbt_size,1.0f,Orange);
+            //     if(CheckCollisionPointRec(click,edite_rec)){
+            //         return EDIT;
+            //     }
+            // }
 
             // Salir
             // DrawRectangleRec(return_rec,WHITE);
@@ -776,7 +776,6 @@ SCREENS DrawAdd(int screenWidth, int screenHeight, string arhc_name, int *p){
                     }
                 }
             }
-
         EndDrawing();
     }
     

@@ -30,7 +30,7 @@ int main(){
         {
         case MENU:
         {
-            currentScreen = DrawMenu(screenWidth,screenHeight,"Adan");
+            currentScreen = DrawMenu(screenWidth,screenHeight,"Drake");
             break;
         }
         case CREATE:
