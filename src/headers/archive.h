@@ -13,7 +13,6 @@ string DrawNew(int screenWidth, int screenHeight, int *p);
 SCREENS DrawFailToLoad(int screenWidth, int screenHeight);
 
 // ----------------- Funciones ------------------- //
-
 // Cargar archivo
 string DrawCharge(int screenWidth, int screenHeight){
     // -----------------Recursos-----------------
