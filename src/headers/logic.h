@@ -17,6 +17,7 @@ typedef struct estructura {
     int ind; // Indice
 }Tdata;
 
+// Cargar archivo
 bool charge(string arch_name, int *p){
     char name[30];
     strcpy(name, arch_name.c_str());
@@ -43,7 +44,20 @@ bool charge(string arch_name, int *p){
     return false;
 }
 
-void load (int *p, const char arch[], char place[],char pass[], char note[])
+// Nuevo archivo
+void bin_create (int *p,char arch[])
+{
+    FILE *doc = fopen(arch,"wb");
+    if(doc)
+    {
+        printf("Archivo Creado\n");
+        (*p)=0;
+    }
+    fclose(doc);
+}
+
+// Nuevo registro
+void new_reg (int *p, const char arch[], char place[],char pass[], char note[])
 {
     char tplace[50],//Varaible temporal de zona
         tpas[MAXCHAR],//Temporal pass
@@ -67,17 +81,9 @@ void load (int *p, const char arch[], char place[],char pass[], char note[])
     fclose(doc);
 }
 
-void bin_create (int *p,char arch[])
-{
-    FILE *doc = fopen(arch,"wb");
-    if(doc)
-    {
-        printf("Archivo Creado\n");
-        (*p)=0;
-    }
-    fclose(doc);
-}
 
+
+// Imprimir registros
 void priArch (string arch_name)
 {
     Tdata temp;

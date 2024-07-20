@@ -1,6 +1,7 @@
 #include "raylib.h"
 
 #include "./headers/startScreens.h"
+#include "./headers/archive.h"
 
 // arch_name == invalid = error
 // No usar invalid para arch
@@ -80,6 +81,7 @@ int main(){
         }
         case DELETE:
         {
+            
             break;
         }
         case EXIT:
